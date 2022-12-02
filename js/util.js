@@ -24,7 +24,7 @@ function randomMassive(massive) {
   const newMassive = [];
 
   for (let i = 0; i <= massive.length - 1; i++) {
-    if (getRandomFloatNumber(0, 1) == 0) {
+    if (getRandomFloatNumber(0, 1) === '0') {
       newMassive.push(massive[i]);
     }
   }

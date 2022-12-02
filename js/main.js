@@ -1,4 +1,2 @@
-import { getAuthors } from './data.js';
-
-console.log(getAuthors());
+import './autors.js';
 

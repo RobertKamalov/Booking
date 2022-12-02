@@ -1,5 +1,6 @@
 import { getRandomFloatNumber, randomMassive } from './util.js'
 
+
 // Координаты адресов
 const LocationXY = {
   MIN_X: 35.65000,
@@ -103,7 +104,7 @@ const getAuthors = (amountAuthors = 10) => {
       offer: {
         title: titles[getRandomFloatNumber(0, titles.length - 1)],
         address: locationX + ', ' + locationY,
-        price: getRandomFloatNumber(Price.MIN, Price.MAX) + ' рублей',
+        price: getRandomFloatNumber(Price.MIN, Price.MAX),
         type: types[getRandomFloatNumber(0, types.length - 1)],
         rooms: getRandomFloatNumber(Rooms.MIN, Rooms.MAX),
         guests: getRandomFloatNumber(Guests.MIN, Guests.MAX),
