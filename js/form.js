@@ -15,7 +15,7 @@ const changeMinPrice = function (minPrice) {
   inputPrice.min = minPrice;
 }
 
-const checkTimeClick = function (checkTime, resaultTime) {
+const checkTimeHandler = function (checkTime, resaultTime) {
   switch (checkTime.value) {
     case '12:00':
       return resaultTime.value = '12:00';
@@ -26,8 +26,8 @@ const checkTimeClick = function (checkTime, resaultTime) {
   }
 }
 
-timeIn.addEventListener('change', function () { checkTimeClick(timeIn, timeOut) })
-timeOut.addEventListener('change', function () { checkTimeClick(timeOut, timeIn) })
+timeIn.addEventListener('change', function () { checkTimeHandler(timeIn, timeOut) })
+timeOut.addEventListener('change', function () { checkTimeHandler(timeOut, timeIn) })
 
 inputType.addEventListener('change', function () {
   switch (inputType.value) {
