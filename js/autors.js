@@ -1,10 +1,8 @@
-import { getAuthors } from "./data.js";
+import { getAuthors } from './data.js';
 
 const authors = getAuthors();
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('#map-canvas');
-
 
 // Переводим названия жилья на русский
 const translateHousing = function (housing) {
@@ -24,7 +22,7 @@ const translateHousing = function (housing) {
 
 // Скрываем пустые блоки
 const hideEmptyBlock = function (block, massive) {
-  if (!massive.length) { block.classList.add('hidden') };
+  if (!massive.length) { block.classList.add('hidden') }
 }
 
 const fragmentAuthors = document.createDocumentFragment();
@@ -65,6 +63,7 @@ authors.forEach((author) => {
   hideEmptyBlock(mapElement.querySelector('.popup__photos'), author.offer.photos);
 
   fragmentAuthors.appendChild(mapElement);
+
 });
 
-mapCanvas.appendChild(fragmentAuthors.children[0]);
+console.log(fragmentAuthors);
