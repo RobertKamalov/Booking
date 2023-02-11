@@ -1,3 +1,5 @@
+import { authors, fragmentAuthors } from "./autors.js";
+
 const L = window.L;
 const map = L.map('map-canvas');
 const adForm = document.querySelector('.ad-form');
@@ -12,6 +14,7 @@ const geolocationTokio = {
 
 // Размер маркера
 const ICON_MAIN_SIZE = 52;
+const ICON_SIZE = 40;
 
 // Размер отдаления карты
 const MAP_ZOOM = 16;
@@ -70,13 +73,19 @@ map.setView({
 
 
 
-// Создаем иконку для маркера
+// Создаем иконку для главного маркера
 const iconMainMarker = L.icon({
   iconUrl: '../img/main-pin.svg',
   iconSize: [ICON_MAIN_SIZE, ICON_MAIN_SIZE],
   iconAnchor: [(ICON_MAIN_SIZE / 2), ICON_MAIN_SIZE],
 });
 
+// Создаем иконку для второстепенных маркеров
+const iconMarker = L.icon({
+  iconUrl: '../img/pin.svg',
+  iconSize: [ICON_SIZE, ICON_SIZE],
+  iconAnchor: [(ICON_SIZE / 2), ICON_SIZE],
+});
 
 // Создаем и выставляем маркер
 const mainMarker = L.marker(
@@ -101,3 +110,20 @@ mainMarker.on('moveend', (evt) => {
   let geolocation = evt.target.getLatLng();
   address.value = (geolocation.lat).toFixed(5) + ', ' + (geolocation.lng).toFixed(5);
 });
+
+
+// Добавляем маркеры других авторов (второстепенные)
+for (let i = 0; i < authors.length; i++) {
+  let contentMarker = document.createElement('div');
+  contentMarker = fragmentAuthors.children[i];
+  const marker = L.marker(
+    {
+      lat: authors[i].location.x,
+      lng: authors[i].location.y,
+    },
+    {
+      icon: iconMarker,
+    },
+  );
+  marker.addTo(map).bindPopup(contentMarker);
+};

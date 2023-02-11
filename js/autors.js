@@ -63,7 +63,6 @@ authors.forEach((author) => {
   hideEmptyBlock(mapElement.querySelector('.popup__photos'), author.offer.photos);
 
   fragmentAuthors.appendChild(mapElement);
-
 });
 
-console.log(fragmentAuthors);
+export { authors, fragmentAuthors };
