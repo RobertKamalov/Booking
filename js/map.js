@@ -104,7 +104,7 @@ mainMarker.addTo(map);
 
 // Удаление ручного ввода в строку адрес и добавления координатов с точки
 address.readOnly = true;
-address.disabled = true;
+// address.disabled = true;
 address.value = (geolocationTokio.LAT).toFixed(5) + ', ' + (geolocationTokio.LNG).toFixed(5);
 mainMarker.on('moveend', (evt) => {
   let geolocation = evt.target.getLatLng();
