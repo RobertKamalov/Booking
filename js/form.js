@@ -1,11 +1,15 @@
-const inputType = document.querySelector('#type');
-const inputPrice = document.querySelector('#price');
-const inputRoomNumber = document.querySelector('#room_number')
-const inputCapacity = document.querySelector('#capacity');
-const inputCapacityOptions = inputCapacity.querySelectorAll('option');
-const timeIn = document.querySelector('#timein');
-const timeOut = document.querySelector('#timeout');
+const form = document.querySelector('.ad-form');
+const inputType = form.querySelector('#type');
+const inputPrice = form.querySelector('#price');
+const inputRoomNumber = form.querySelector('#room_number')
+const inputNumberOfSeat = form.querySelector('#capacity');
+const inputNumberOfSeatOptions = inputNumberOfSeat.querySelectorAll('option');
+const timeCheckInRoom = form.querySelector('#timein');
+const timeCheckOutRoom = form.querySelector('#timeout');
+const titleRoom = form.querySelector('#title');
 
+
+// Значение цен для сдаваемых помещений
 const minPrice = {
   MIN: 0,
   MAX: 1000000,
@@ -17,47 +21,55 @@ const minPrice = {
 };
 
 
+// Значение мин и макс заголовка объявления
+const titleValueLength = {
+  MIN: 30,
+  MAX: 100,
+};
+
+
 // Выставляем максимальное и минимальное значение цены за ночь
 // Минимально вначале стоит 5000,так как изначально выбрана квартира
 inputPrice.min = 5000;
 inputPrice.max = 1000000;
 
 
-// Функция для синхронизации количество комнат - количество гостей
-const checkInputCapacity = (numberRoom) => {
-  inputCapacityOptions.forEach((element) => {
-    element.disabled = true;
-    element.style.display = 'none';
+// Функция для синхронизации количество комнат - количество гостей и проверки поля
+const sincInputNumberOfSeat = (numberRoom) => {
+  inputNumberOfSeatOptions.forEach((element) => {
+    if (numberRoom === '100') { numberRoom = 0 };
+    if (element.value > numberRoom) {
+      element.disabled = true;
+      element.style.display = 'none';
+    } else {
+      element.disabled = false;
+      element.style.display = 'block';
+    }
   })
-  if (numberRoom == 100) { numberRoom = 0 };
-  for (let i = numberRoom; i >= 0; i--) {
-    inputCapacityOptions[inputCapacityOptions.length - 1 - i].disabled = false;
-    inputCapacityOptions[inputCapacityOptions.length - 1 - i].style.display = 'block';
+
+  if (inputNumberOfSeat.value > numberRoom) {
+    inputNumberOfSeat.setCustomValidity('Выберите значение из списка');
+  } else {
+    inputNumberOfSeat.setCustomValidity('');
   }
-  inputCapacityOptions[inputCapacityOptions.length - 1 - numberRoom].selected = 'selected';
 };
 
 
-// Cинхронизации количество комнат - количество гостей
-checkInputCapacity(inputRoomNumber.value);
-inputRoomNumber.addEventListener('change', (e) => {
-  const value = e.target.value;
-  switch (value) {
-    case 3:
-      console.log()
-      break;
-
-    default:
-      break;
-  }
-  console.log(e.target.value)
-  checkInputCapacity(inputRoomNumber.value);
+// Сбрасываем ошибку на выборе количетсве мест при изменении поля
+inputNumberOfSeat.addEventListener('change', () => {
+  inputNumberOfSeat.setCustomValidity('');
 });
 
 
+// Cинхронизации количество комнат - количество гостей
+sincInputNumberOfSeat(inputRoomNumber.value);
+inputRoomNumber.addEventListener('change', () => {
+  sincInputNumberOfSeat(inputRoomNumber.value);
+});
+
 
 // Время выезда = времени въезда
-const checkTimeHandler = function (checkTime, resaultTime) {
+const sincTimeHandler = function (checkTime, resaultTime) {
   switch (checkTime.value) {
     case '12:00':
       return resaultTime.value = '12:00';
@@ -67,10 +79,11 @@ const checkTimeHandler = function (checkTime, resaultTime) {
       return resaultTime.value = '14:00';
   }
 };
-timeIn.addEventListener('change', function () { checkTimeHandler(timeIn, timeOut) });
-timeOut.addEventListener('change', function () { checkTimeHandler(timeOut, timeIn) });
+timeCheckInRoom.addEventListener('change', function () { sincTimeHandler(timeCheckInRoom, timeCheckOutRoom) });
+timeCheckOutRoom.addEventListener('change', function () { sincTimeHandler(timeCheckOutRoom, timeCheckInRoom) });
 
 
+// Изменяем минимальное значение цены помещения
 const changeMinPrice = function (minPrice) {
   inputPrice.placeholder = minPrice;
   inputPrice.min = minPrice;
@@ -91,4 +104,20 @@ inputType.addEventListener('change', function () {
     default:
       return changeMinPrice(0);
   }
+});
+
+
+// Выставляем вывод своих валидаций для заполнения заголовка
+titleRoom.addEventListener('input', () => {
+  const valueLength = titleRoom.value.length;
+
+  if (valueLength < titleValueLength.MIN) {
+    titleRoom.setCustomValidity('Ещё ' + (titleValueLength.MIN - valueLength) + ' символов.');
+  } else if (valueLength > titleValueLength.MAX) {
+    titleRoom.setCustomValidity('Удалите ' + (valueLength - titleValueLength.MAX) + ' символов.');
+  } else {
+    titleRoom.setCustomValidity('');
+  }
+
+  titleRoom.reportValidity();
 });
